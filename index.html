@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MinuteScribe</title>
+  <style>
+    /* ── RESET ── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── HEADER ── */
+    .ms-header {
+      background: #0067C0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+    }
+    .ms-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ms-logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+    }
+    .ms-nav { display: flex; gap: 40px; }
+    .ms-nav a {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+    .ms-nav a:hover { text-decoration: underline; }
+
+    /* ── PAGE INNER WRAPPER ── */
+    /* Constrains content to 1200px centred, matching the header.
+       Background colours stay on the outer section divs (full-width bands).
+       Horizontal padding lives here, not on the outer divs. */
+    .page-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 72px;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      background: #F3F3F3;
+      padding: 110px 0 46px 0;
+      font-family: Arial, sans-serif;
+    }
+    #hero .page-inner {
+      display: flex;
+      gap: 56px;
+      align-items: flex-start;
+    }
+    .hero-left  { flex: 1; min-width: 0; }
+    .hero-right { width: 400px; flex-shrink: 0; margin-top: 97px; }
+
+    .hero-tagline {
+      font-family: Georgia, serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: #1A1A1A;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid #D1D1D1;
+    }
+    .benefit {
+      display: flex;
+      gap: 32px;
+      padding: 26px 0;
+      border-bottom: 1px solid #D1D1D1;
+    }
+    .benefit:first-of-type { padding-top: 0; }
+    .benefit:last-of-type  { border-bottom: none; padding-bottom: 0; }
+    .benefit-left  { width: 240px; flex-shrink: 0; }
+    .benefit-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0067C0;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .benefit-title {
+      font-family: Georgia, serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: #1A1A1A;
+      line-height: 1.25;
+    }
+    .benefit-body {
+      font-size: 15px;
+      color: #2A2A2A;
+      line-height: 1.75;
+      padding-top: 4px;
+    }
+    .benefit-body strong { color: #1A1A1A; }
+
+    /* Action panel */
+    .action-panel {
+      background: #FFFFFF;
+      border: 1px solid #D1D1D1;
+      border-top: 3px solid #1A1A1A;
+      border-radius: 10px;
+      padding: 28px 26px 26px 26px;
+    }
+    .panel-heading {
+      font-family: Georgia, serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1A1A1A;
+      text-align: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #D1D1D1;
+      margin-bottom: 22px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: Arial, sans-serif;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 8px;
+      border: none;
+    }
+    .btn-dark { background: #202020; color: #FFFFFF; }
+    .btn-dark:hover { background: #383838; }
+    .btn-blue { background: #0067C0; color: #FFFFFF; }
+    .btn-blue:hover { background: #0055A0; }
+    .btn-sub {
+      font-size: 11.5px;
+      color: #2A2A2A;
+      text-align: center;
+      line-height: 1.55;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .panel-rule { height: 1px; background: #D1D1D1; margin: 2px 0 20px 0; }
+    .pricing-block {
+      background: #F3F3F3;
+      border: 1px solid #D1D1D1;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 6px;
+      text-align: center;
+    }
+    .pricing-main { font-size: 14px; font-weight: 700; color: #1A1A1A; margin-bottom: 5px; }
+    .pricing-sub   { font-size: 12px; color: #2A2A2A; line-height: 1.6; }
+
+    /* ── AT A GLANCE ── */
+    #glance {
+      background: #FFFFFF;
+      padding: 60px 0 56px 0;
+      border-top: 1px solid #D1D1D1;
+      font-family: Arial, sans-serif;
+    }
+    .section-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0067C0;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .section-heading {
+      font-family: Georgia, serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #1A1A1A;
+      line-height: 1.2;
+      margin-bottom: 48px;
+    }
+    .steps-row    { display: flex; gap: 0; }
+    .step         { flex: 1; padding-right: 40px; }
+    .step:last-child { padding-right: 0; }
+    .step-divider { width: 1px; background: #D1D1D1; align-self: stretch; margin-right: 40px; flex-shrink: 0; }
+    .step-num {
+      font-family: Georgia, serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: #D1D1D1;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .step-title {
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1A1A1A;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .step-body { font-size: 14px; color: #2A2A2A; line-height: 1.7; }
+    .glance-footer {
+      margin-top: 44px;
+      padding-top: 24px;
+      border-top: 1px solid #D1D1D1;
+      font-size: 13px;
+      color: #2A2A2A;
+    }
+    .glance-link {
+      color: #0067C0;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .glance-link:hover { text-decoration: underline; }
+
+    /* ── FAQ ── */
+    #faq {
+      background: #F3F3F3;
+      padding: 60px 0 68px 0;
+      border-top: 1px solid #D1D1D1;
+      font-family: Arial, sans-serif;
+    }
+    .faq-section-tag {
+      font-size: 10px; font-weight: 700; color: #0067C0;
+      letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .faq-section-heading {
+      font-family: Georgia, serif; font-size: 26px; font-weight: 700;
+      color: #1A1A1A; line-height: 1.2; margin-bottom: 48px;
+    }
+    .faq-body  { max-width: 860px; }
+    .faq-group { margin-bottom: 36px; }
+    .faq-group:last-child { margin-bottom: 0; }
+    .faq-group-title {
+      font-size: 11px; font-weight: 700; color: #0067C0;
+      letter-spacing: 1.2px; text-transform: uppercase;
+      padding-bottom: 10px; margin-bottom: 4px; border-bottom: 2px solid #0067C0;
+    }
+    details.faq-item { border-bottom: 1px solid #D1D1D1; }
+    details.faq-item > summary { list-style: none !important; }
+    details.faq-item > summary::-webkit-details-marker { display: none !important; }
+    details.faq-item > summary.faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 14px 15px 0; cursor: pointer; font-size: 14px; font-weight: 700;
+      color: #1A1A1A; gap: 16px; border-radius: 4px; transition: color 0.15s;
+    }
+    details.faq-item > summary.faq-q:hover { color: #0067C0; }
+    details.faq-item[open] > summary.faq-q { background: #EBF3FB; color: #0067C0; }
+    details.faq-item[open] .faq-chevron { transform: rotate(180deg); color: #0067C0; }
+    .faq-chevron {
+      font-size: 11px; color: #888; flex-shrink: 0;
+      transition: transform 0.2s, color 0.2s;
+    }
+    .faq-a {
+      font-size: 14px; color: #2A2A2A; line-height: 1.75; padding: 0 14px 16px 0;
+    }
+    .faq-email { color: #0067C0; font-weight: 700; text-decoration: none; }
+
+    /* ── GETTING STARTED ── */
+    #getting-started {
+      background: #FFFFFF;
+      padding: 60px 0 68px 0;
+      border-top: 1px solid #D1D1D1;
+      font-family: Arial, sans-serif;
+    }
+    .gs-section-tag { font-size: 10px; font-weight: 700; color: #0067C0; letter-spacing: 1.6px; text-transform: uppercase; margin-bottom: 10px; }
+    .gs-section-heading { font-family: Georgia, serif; font-size: 26px; font-weight: 700; color: #1A1A1A; line-height: 1.2; margin-bottom: 20px; }
+    .gs-intro { font-size: 14px; color: #2A2A2A; line-height: 1.7; margin-bottom: 36px; max-width: 800px; }
+    .gs-intro a { color: #0067C0; font-weight: 700; }
+
+    details.gs-part { border-bottom: 1px solid #D1D1D1; }
+    details.gs-part > summary { list-style: none !important; }
+    details.gs-part > summary::-webkit-details-marker { display: none !important; }
+    details.gs-part > summary.gs-part-title {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; cursor: pointer; font-size: 13px; font-weight: 700;
+      color: #2A2A2A; font-family: Arial, sans-serif; gap: 16px;
+    }
+    details.gs-part > summary.gs-part-title:hover { color: #0067C0; }
+    details.gs-part[open] > summary.gs-part-title { color: #0067C0; background: #EBF3FB; padding-left: 10px; border-radius: 4px 4px 0 0; }
+    details.gs-part[open] .gs-part-chevron { transform: rotate(180deg); color: #0067C0; }
+    .gs-part-chevron { font-size: 11px; color: #888; flex-shrink: 0; transition: transform 0.2s, color 0.2s; }
+    .gs-part-body { padding: 8px 0 24px 0; max-width: 800px; }
+
+    .gs-step { padding: 24px 0; border-bottom: 1px solid #D1D1D1; }
+    .gs-step:first-child { padding-top: 0; }
+    .gs-step:last-child  { border-bottom: none; padding-bottom: 0; }
+    .gs-step-label { font-size: 10px; font-weight: 700; color: #0067C0; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 6px; }
+    .gs-step-title { font-family: Georgia, serif; font-size: 17px; font-weight: 700; color: #1A1A1A; margin-bottom: 10px; line-height: 1.25; }
+    .gs-step-body { font-size: 14px; color: #2A2A2A; line-height: 1.75; }
+    .gs-step-body ol { margin: 10px 0 0 20px; }
+    .gs-step-body li { margin-bottom: 5px; }
+    .gs-step-body strong { color: #1A1A1A; }
+
+    .gs-intro-note { background: #F3F3F3; border-left: 4px solid #0067C0; border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 20px; font-size: 14px; color: #2A2A2A; line-height: 1.7; }
+    .gs-warning { background: #FFF8E6; border-left: 4px solid #E8A000; border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #2A2A2A; line-height: 1.65; }
+
+    .gs-sc-radios { display: none; }
+    .scenario-bar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .scenario-label { font-size: 13px; font-weight: 700; padding: 9px 18px; border-radius: 10px; border: 1px solid #D1D1D1; background: #F3F3F3; color: #202020; cursor: pointer; font-family: Arial, sans-serif; display: inline-block; }
+    .scenario-label:hover { border-color: #0067C0; color: #0067C0; }
+    #gs-sc-a:checked ~ .scenario-bar .scenario-label:nth-child(1),
+    #gs-sc-b:checked ~ .scenario-bar .scenario-label:nth-child(2),
+    #gs-sc-c:checked ~ .scenario-bar .scenario-label:nth-child(3) { background: #202020; color: #FFFFFF; border-color: #202020; }
+    .scenario-panel { display: none; }
+    #gs-sc-a:checked ~ .scenario-panels #gs-sc-panel-a,
+    #gs-sc-b:checked ~ .scenario-panels #gs-sc-panel-b,
+    #gs-sc-c:checked ~ .scenario-panels #gs-sc-panel-c { display: block; }
+    #gs-sc-a:checked ~ #gs-localsend,
+    #gs-sc-b:checked ~ #gs-localsend { display: block; }
+    #gs-sc-c:checked ~ #gs-localsend { display: none; }
+
+    .localsend-label { font-size: 11px; font-weight: 700; color: #0067C0; letter-spacing: 1.4px; text-transform: uppercase; margin: 24px 0 14px 0; }
+    .video-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #0067C0; font-weight: 700; text-decoration: none; }
+    .video-link:hover { text-decoration: underline; }
+
+    /* ── USER QUESTIONS ── */
+    #user-questions {
+      background: #F3F3F3;
+      padding: 60px 0 68px 0;
+      border-top: 1px solid #D1D1D1;
+      font-family: Arial, sans-serif;
+    }
+    .uq-section-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0067C0;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .uq-section-heading {
+      font-family: Georgia, serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #1A1A1A;
+      line-height: 1.2;
+      margin-bottom: 48px;
+    }
+    .uq-body     { max-width: 860px; }
+    .uq-group    { margin-bottom: 32px; }
+    .uq-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0067C0;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding-bottom: 10px;
+      margin-bottom: 4px;
+      border-bottom: 2px solid #0067C0;
+    }
+    details.uq-item { border-bottom: 1px solid #D1D1D1; }
+    details.uq-item:last-child { border-bottom: none; }
+    details.uq-item > summary { list-style: none; }
+    details.uq-item > summary::-webkit-details-marker { display: none; }
+    details.uq-item > summary.uq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 14px 15px 0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1A1A1A;
+      gap: 16px;
+      border-radius: 4px;
+    }
+    details.uq-item > summary.uq-q:hover { color: #0067C0; }
+    details.uq-item[open] > summary.uq-q {
+      background: #EBF3FB;
+      color: #0067C0;
+    }
+    details.uq-item[open] .uq-chevron {
+      transform: rotate(180deg);
+      color: #0067C0;
+    }
+    .uq-chevron {
+      font-size: 11px;
+      color: #888;
+      flex-shrink: 0;
+      transition: transform 0.2s, color 0.2s;
+    }
+    .uq-a {
+      font-size: 14px;
+      color: #2A2A2A;
+      line-height: 1.75;
+      padding: 0 14px 18px 0;
+    }
+    .uq-intro-note { font-size: 13.5px; color: #2A2A2A; line-height: 1.7; margin-bottom: 16px; }
+
+    /* CSS-only tab switcher */
+    .uq-tab-radios { display: none; }
+    .uq-tabs {
+      display: flex;
+      border-bottom: 2px solid #D1D1D1;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .uq-tab-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #2A2A2A;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      font-family: Arial, sans-serif;
+      display: inline-block;
+    }
+    .uq-tab-label:hover { color: #0067C0; }
+    .uq-panel { display: none; }
+    #uq-t0:checked ~ .uq-tabs .uq-tab-label:nth-child(1),
+    #uq-t1:checked ~ .uq-tabs .uq-tab-label:nth-child(2),
+    #uq-t2:checked ~ .uq-tabs .uq-tab-label:nth-child(3) {
+      color: #0067C0;
+      border-bottom: 3px solid #0067C0;
+      background: #EBF3FB;
+      border-radius: 4px 4px 0 0;
+    }
+    #uq-t0:checked ~ .uq-panels .uq-panel:nth-child(1),
+    #uq-t1:checked ~ .uq-panels .uq-panel:nth-child(2),
+    #uq-t2:checked ~ .uq-panels .uq-panel:nth-child(3) {
+      display: block;
+    }
+    .uq-steps ol  { margin: 8px 0 0 18px; }
+    .uq-steps li  { margin-bottom: 5px; font-size: 13.5px; line-height: 1.65; color: #2A2A2A; }
+    .uq-option    { margin-bottom: 16px; }
+    .uq-option-title { font-weight: 700; color: #1A1A1A; margin-bottom: 4px; font-size: 14px; }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: #202020;
+      border-top: 3px solid #0067C0;
+      padding: 28px 0;
+      font-family: Arial, sans-serif;
+    }
+    #footer .page-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-contact { font-size: 13px; color: #D1D1D1; line-height: 1.6; }
+    .footer-contact a { color: #FFFFFF; font-weight: 700; text-decoration: none; }
+    .footer-contact a:hover { text-decoration: underline; }
+    .footer-copyright { font-size: 12px; color: #888888; line-height: 1.6; text-align: right; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      /* Header */
+      .ms-header-inner {
+        padding: 16px 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+        max-width: 100%;
+      }
+      .ms-logo  { font-size: 22px; }
+      .ms-nav   { gap: 20px; flex-wrap: wrap; }
+      .ms-nav a { font-size: 13px; }
+
+      /* Page inner wrapper: reduce horizontal padding on mobile */
+      .page-inner { padding: 0 20px; }
+
+      /* Hero */
+      #hero { padding: 116px 0 40px 0; }
+      #hero .page-inner {
+        flex-direction: column;
+        gap: 36px;
+      }
+      .hero-right { width: 100%; margin-top: 0; }
+      .benefit {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .benefit-left { width: 100%; }
+      .hero-tagline { font-size: 30px; }
+
+      /* Glance */
+      #glance { padding: 36px 0 40px 0; }
+      .steps-row { flex-direction: column; gap: 28px; }
+      .step { padding-right: 0; }
+      .step-divider { display: none; }
+
+      /* FAQ */
+      #faq { padding: 36px 0 40px 0; }
+
+      /* Getting Started */
+      #getting-started { padding: 36px 0 40px 0; }
+
+      /* User Questions */
+      #user-questions { padding: 36px 0 40px 0; }
+
+      /* Footer */
+      #footer { padding: 24px 0; }
+      #footer .page-inner {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      .footer-copyright { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       HEADER  (01_header.html)
+       ══════════════════════════════════════════ -->
+  <div class="ms-header">
+    <div class="ms-header-inner">
+      <a class="ms-logo" href="#hero">MinuteScribe</a>
+      <nav class="ms-nav">
+        <a href="#glance">At a Glance</a>
+        <a href="#faq">FAQ</a>
+        <a href="#getting-started">Getting Started</a>
+        <a href="#user-questions">User Questions</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       HERO  (02_hero.html)
+       ══════════════════════════════════════════ -->
+  <div id="hero">
+    <div class="page-inner">
+    <div class="hero-left">
+      <div class="hero-tagline">Recording to Minutes.<br>In minutes.</div>
+
+      <div class="benefit">
+        <div class="benefit-left">
+          <span class="benefit-tag">Privacy</span>
+          <div class="benefit-title">Your meeting never<br>leaves the room.</div>
+        </div>
+        <div class="benefit-body">Processed entirely on your own computer. No audio files, no transcripts, and no meeting content are ever sent to an outside server. <strong>What happens in your meeting stays private.</strong></div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-left">
+          <span class="benefit-tag">Speed</span>
+          <div class="benefit-title">Done before<br>the coffee cools.</div>
+        </div>
+        <div class="benefit-body">MinuteScribe works locally and delivers a complete, formatted Word document &mdash; <strong>ready to review, edit, and send.</strong></div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-left">
+          <span class="benefit-tag">Ease of use</span>
+          <div class="benefit-title">Ready in<br>under an hour.</div>
+        </div>
+        <div class="benefit-body">Follow our step-by-step guide once, and you are set. <strong>Most users produce finished minutes on their very first try.</strong></div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-left">
+          <span class="benefit-tag">No subscriptions</span>
+          <div class="benefit-title">Your meeting.<br>Your minutes.</div>
+        </div>
+        <div class="benefit-body">MinuteScribe works with recordings from any common source &mdash; your phone, Zoom, Teams, or any app you already use. No new services. No recurring fees.</div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="action-panel">
+        <div class="panel-heading">Ready to try it?</div>
+        <a class="btn btn-dark" href="#glance">At a Glance &#8595;</a>
+        <span class="btn-sub">See how it works in four steps</span>
+        <div class="panel-rule"></div>
+        <a class="btn btn-dark" href="#">Download Program</a>
+        <span class="btn-sub">Free download &nbsp;&middot;&nbsp; Windows 10 / 11</span>
+        <div class="panel-rule"></div>
+        <a class="btn btn-blue" href="#">Purchase Credits</a>
+        <span class="btn-sub">No monthly bill &nbsp;&middot;&nbsp; Top up when you&rsquo;re ready</span>
+        <div class="pricing-block">
+          <div class="pricing-main">Taster bundle: 2 credits for $9 CAD</div>
+          <div class="pricing-sub">Two meetings to decide if<br>MinuteScribe works for you.</div>
+        </div>
+      </div>
+    </div>
+    </div><!-- end .page-inner -->
+  </div><!-- end #hero -->
+
+  <!-- ══════════════════════════════════════════
+       AT A GLANCE  (02b_at_a_glance.html)
+       ══════════════════════════════════════════ -->
+  <div id="glance">
+    <div class="page-inner">
+    <div class="section-tag">At a Glance</div>
+    <div class="section-heading">Four simple steps from recording to finished minutes.</div>
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Record your meeting.</div>
+        <div class="step-body">MinuteScribe accepts meeting recordings from any common source &mdash; phone, Zoom, Teams, in any standard audio format.</div>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Transfer to your computer.</div>
+        <div class="step-body">If you recorded on your phone, transfer the audio file to your computer. Our Getting Started guide walks you through step by step.</div>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Open MinuteScribe.</div>
+        <div class="step-body">Launch the application and load your recording. MinuteScribe handles the rest &mdash; a good time to step away and get a coffee.</div>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Receive your document.</div>
+        <div class="step-body">Your completed minutes open automatically as a formatted Word document, ready to review, edit, and distribute.</div>
+      </div>
+    </div>
+    <div class="glance-footer">
+      Need more details? &nbsp;<a class="glance-link" href="#getting-started">See the full Getting Started guide &#8595;</a>
+    </div>
+    </div><!-- end .page-inner -->
+  </div><!-- end #glance -->
+
+  <!-- ══════════════════════════════════════════
+       FAQ  (03a + 03b + 03c merged into one #faq div)
+       ══════════════════════════════════════════ -->
+  <div id="faq">
+    <div class="page-inner">
+    <div class="faq-section-tag">FAQ</div>
+    <div class="faq-section-heading">Frequently asked questions.</div>
+    <div class="faq-body">
+
+      <!-- About the product (03a) -->
+      <div class="faq-group">
+        <div class="faq-group-title">About the product</div>
+        <details class="faq-item">
+          <summary class="faq-q"><span>What is MinuteScribe?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe is a Windows application that turns a recording of your meeting into a complete, formatted set of minutes &mdash; saved as a Word document and ready for you to review and distribute.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q"><span>What do the finished minutes look like?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe produces a professionally formatted Word document that follows the structure of formal meeting minutes &mdash; including the meeting date, attendees, agenda items, decisions made, and action items. You can edit the document in Word just like any other file.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q"><span>Will MinuteScribe work for my type of organization?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe is designed for any organization that holds formal meetings and needs a written record &mdash; including churches, charities, nonprofit boards, HOAs, and small businesses. If your organization keeps meeting minutes, MinuteScribe can help.</div>
+        </details>
+        <details class="faq-item" style="border-bottom:none;">
+          <summary class="faq-q"><span>Is my meeting content kept private?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">Completely. MinuteScribe processes your recording directly on your own computer. No audio, no transcript, and no meeting content is ever sent to an outside server. Your meeting stays private.</div>
+        </details>
+      </div>
+
+      <!-- About getting it running (03a) -->
+      <div class="faq-group">
+        <div class="faq-group-title">About getting it running</div>
+        <details class="faq-item">
+          <summary class="faq-q"><span>What do I need to get started?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">You need a Windows computer, a recording of your meeting, and a MinuteScribe licence code. That is all. No additional software subscriptions are required.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q"><span>Does MinuteScribe work on my computer?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe runs on Windows 10 and Windows 11. If your computer runs either of these, you are good to go.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q"><span>How do I get my recording onto my computer?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">It depends on how you made your recording. Our Getting Started guide walks you through the most common scenarios &mdash; including transferring a recording from your phone and saving a recording from Zoom or Teams.</div>
+        </details>
+        <details class="faq-item" style="border-bottom:none;">
+          <summary class="faq-q"><span>I use the free version of Google Meet. Can I still use MinuteScribe?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">Yes. The free version of Google Meet does not include a built-in recording feature, but free Chrome extensions are available that can record your meeting audio. MinuteScribe works with the audio formats these extensions produce. See the User Questions section for guidance on setting up a Chrome extension for Google Meet recording.</div>
+        </details>
+      </div>
+
+      <!-- About using it (03a) -->
+      <div class="faq-group">
+        <div class="faq-group-title">About using it</div>
+        <details class="faq-item">
+          <summary class="faq-q"><span>How long does it take to produce the finished minutes?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">It depends on the length of your recording. A two hour meeting typically takes around ten minutes to process. MinuteScribe will show you its progress while it works &mdash; a good time to step away and get a coffee.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q"><span>Where will the finished document be saved on my computer?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe saves your finished minutes in the Minutes folder, which is accessible directly from the MinuteScribe application. Just click the Open Minutes Folder button.</div>
+        </details>
+        <details class="faq-item" style="border-bottom:none;">
+          <summary class="faq-q"><span>What if the minutes do not look quite right?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe does its best to produce accurate, well structured minutes &mdash; but no automated tool is perfect. Speaker names in particular may occasionally need correction. The finished minutes are saved as a standard Word document. You can edit, format, and save them exactly as you would any other Word file.</div>
+        </details>
+      </div>
+
+      <!-- About buying it (03a) -->
+      <div class="faq-group">
+        <div class="faq-group-title">About buying it</div>
+        <details class="faq-item">
+          <summary class="faq-q"><span>How does purchasing work?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">MinuteScribe is purchased as a bundle of credits rather than a monthly subscription. You buy once, use your credits as you need them, and top up when your balance runs low. There are no recurring charges.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q"><span>What are credits and how do I get more?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">Each time MinuteScribe generates a set of minutes it uses one credit. Your remaining credit balance is always shown in the application. When your balance runs low MinuteScribe will let you know. You can top up at any time by visiting www.minutescribe.ca and clicking Purchase Credits.</div>
+        </details>
+        <details class="faq-item" style="border-bottom:none;">
+          <summary class="faq-q"><span>What if I need help?</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">If you cannot find the answer you need in our Getting Started guide or User Questions section, you are welcome to contact us directly at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a>. We respond within two business days.</div>
+        </details>
+      </div>
+
+      <!-- Policies: Privacy + Refund + EULA (03b + 03c merged into one group) -->
+      <div class="faq-group">
+        <div class="faq-group-title">Policies</div>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Privacy Policy</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">
+            <strong>Effective date: 31 May 2026</strong><br><br>
+            <strong>THE SHORT VERSION</strong><br>
+            MinuteScribe is built around a simple privacy principle: your audio recordings never leave your computer. This policy explains exactly what happens to your data when you use MinuteScribe.<br><br>
+            <strong>1. WHO WE ARE</strong><br>
+            MinuteScribe is a Windows desktop application developed and operated by Franklin Wong, carrying on business as MinuteScribe (&ldquo;MinuteScribe,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;). You can reach us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a>.<br><br>
+            <strong>2. WHAT MINUTESCRIBE DOES &mdash; AND DOES NOT &mdash; COLLECT</strong><br>
+            MinuteScribe does not collect, store, or transmit: your audio recordings; your name, email address, or any account information; usage statistics or analytics; or any data in the background.<br><br>
+            The only data that leaves your computer is the text transcript of your meeting, and only when you choose to generate minutes. See Section 3 for details.<br><br>
+            <strong>3. WHAT HAPPENS WHEN YOU GENERATE MINUTES</strong><br>
+            When you click &ldquo;Generate Minutes,&rdquo; MinuteScribe does the following: (1) Your audio file is transcribed into text on your own computer using a local speech-recognition model (Whisper). The audio file never leaves your machine. (2) The text transcript is sent to the Anthropic Claude API, operated by Anthropic, PBC, for the sole purpose of producing your formatted meeting minutes. Anthropic does not use API inputs to train its models. The transcript is processed and the result is returned to your computer &mdash; it is not stored or retained by MinuteScribe. (3) The finished minutes are returned to your computer and displayed in the application.<br><br>
+            No other network communication takes place. MinuteScribe makes no background connections of any kind.<br><br>
+            <strong>4. ANTHROPIC&rsquo;S HANDLING OF TRANSCRIPT DATA</strong><br>
+            For completeness, Anthropic&rsquo;s data practices are governed by their Privacy Policy, available at https://www.anthropic.com/legal/privacy. We have no control over Anthropic&rsquo;s data practices and are not responsible for them.<br><br>
+            <strong>5. YOUR RESPONSIBILITY FOR MEETING PARTICIPANTS</strong><br>
+            Meeting transcripts may contain personal information about people who attended your meeting. You are responsible for ensuring that your use of MinuteScribe complies with any applicable privacy laws and that meeting participants have been made aware that their words may be transcribed and processed. If you are unsure whether your use of MinuteScribe complies with your organisation&rsquo;s privacy obligations, please seek appropriate advice.<br><br>
+            <strong>6. CANADIAN PRIVACY LAW (PIPEDA)</strong><br>
+            MinuteScribe is operated from Canada and complies with the Personal Information Protection and Electronic Documents Act (PIPEDA). Because MinuteScribe collects no personal information itself &mdash; and because the only data transmitted is the meeting transcript sent to Anthropic at your explicit direction &mdash; your PIPEDA rights regarding MinuteScribe are limited in practical scope. However, if you have questions or concerns about privacy, you may contact us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> and we will respond within a reasonable time.<br><br>
+            <strong>7. CHANGES TO THIS POLICY</strong><br>
+            If we make material changes to this policy, we will notify registered users by email and update the effective date above. The current version of this policy is always available at www.minutescribe.ca.<br><br>
+            <strong>8. CONTACT</strong><br>
+            Franklin Wong, carrying on business as MinuteScribe &mdash; <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> &mdash; www.minutescribe.ca
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-q"><span>Refund Policy</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">
+            <strong>Effective date: 31 May 2026</strong><br><br>
+            <strong>THE SHORT VERSION</strong><br>
+            If MinuteScribe doesn&rsquo;t work as described, contact us within 30 days of purchase and we will make it right. Outside that window, credits are non-refundable.<br><br>
+            <strong>1. 30-DAY SATISFACTION GUARANTEE</strong><br>
+            If MinuteScribe does not function as described on our website or in our documentation, you may request a full refund within 30 days of your original purchase date. To request a refund, contact us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> with your order number and a brief description of the problem. We will review every request promptly and respond within a reasonable time, typically 3&ndash;5 business days.<br><br>
+            <strong>2. WHAT QUALIFIES FOR A REFUND</strong><br>
+            A refund may be granted where: the application fails to install or run correctly on a supported version of Windows, and the issue cannot be resolved through support; the application produces no usable output due to a defect, and the issue cannot be resolved through support; or a material feature described at the time of purchase is not present in the software. We will make reasonable efforts to resolve technical issues before processing a refund. If we cannot resolve the issue, a full refund will be issued.<br><br>
+            <strong>3. WHAT DOES NOT QUALIFY FOR A REFUND</strong><br>
+            Refunds will not be issued for: unused call credits outside the 30-day window; dissatisfaction with AI-generated output quality (minutes may contain errors &mdash; this is disclosed in the End User Licence Agreement and on our website); refund requests submitted more than 30 days after the purchase date, for any reason; or incompatibility with unsupported operating systems or hardware configurations.<br><br>
+            <strong>4. HOW REFUNDS ARE PROCESSED</strong><br>
+            Approved refunds are processed through our payment processor. Refunds are returned to the original payment method. Processing time is typically 5&ndash;10 business days depending on your bank or card issuer. We have no control over your financial institution&rsquo;s processing times.<br><br>
+            <strong>5. CREDITS HAVE NO CASH VALUE</strong><br>
+            Call credits purchased through MinuteScribe have no cash value and are non-transferable. They may not be exchanged for cash except as described in this Refund Policy.<br><br>
+            <strong>6. CHANGES TO THIS POLICY</strong><br>
+            We reserve the right to update this policy. Any changes will apply to purchases made after the updated effective date. The current version is always available at www.minutescribe.ca.<br><br>
+            <strong>7. CONTACT</strong><br>
+            Franklin Wong, carrying on business as MinuteScribe &mdash; <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> &mdash; www.minutescribe.ca
+          </div>
+        </details>
+
+        <details class="faq-item" style="border-bottom:none;">
+          <summary class="faq-q"><span>End User Licence Agreement (EULA)</span><span class="faq-chevron">&#9660;</span></summary>
+          <div class="faq-a">
+            <strong>Effective date: 31 May 2026</strong><br><br>
+            <strong>BEFORE YOU BEGIN</strong><br>
+            Please read this agreement carefully before using MinuteScribe. By accepting these terms during installation, you agree to be bound by them on behalf of your organisation. If you do not agree, you may not use the software &mdash; but please contact us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> and we will do our best to help.<br><br>
+            <strong>1. WHO THIS AGREEMENT IS BETWEEN</strong><br>
+            This agreement is between Franklin Wong, carrying on business as MinuteScribe (&ldquo;MinuteScribe,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;), and the organisation on whose behalf you are accepting these terms (&ldquo;you,&rdquo; &ldquo;your organisation&rdquo;). This licence is granted to your organisation, not to you personally.<br><br>
+            <strong>2. GRANT OF LICENCE</strong><br>
+            We grant your organisation a non-exclusive, non-transferable licence to install and use MinuteScribe on computers owned or controlled by your organisation, subject to the terms of this agreement. Your licence begins when you accept these terms and remains in effect until terminated in accordance with this agreement.<br><br>
+            <strong>3. WHAT YOU MAY NOT DO</strong><br>
+            The following are not permitted: resell or redistribute the software or your call credits to any third party; share or transfer your licence to another organisation; reverse engineer, decompile, or disassemble the software or attempt to derive its source code; attempt to extract, reverse engineer, or misuse any credentials, keys, or authentication tokens embedded in the software (doing so is a breach of this agreement and may result in immediate termination of your licence without refund); use the software for any purpose that violates applicable law.<br><br>
+            <strong>4. CALL CREDITS AND USAGE LIMITS</strong><br>
+            Each time you generate meeting minutes, one call credit is used. Your remaining credit balance is always shown in the application. Credits do not expire. When your credits run out, you can purchase additional credits at www.minutescribe.ca. Credits have no cash value and are non-transferable. Current credit bundle options and pricing are available at www.minutescribe.ca/#faq. The application will prevent minutes generation when your credit balance reaches zero &mdash; this is not a defect.<br><br>
+            <strong>5. YOUR AUDIO AND YOUR DATA</strong><br>
+            Your audio recordings are transcribed locally on your computer using a built-in speech recognition model. Your audio files are never uploaded, transmitted, or shared under any circumstances. When you click &ldquo;Generate Minutes,&rdquo; the text transcript is sent to the Anthropic Claude API for the sole purpose of producing your meeting minutes. This is the only network communication MinuteScribe makes. No background connections, no telemetry, and no silent data transmission of any kind take place. You are responsible for ensuring that your use of MinuteScribe complies with applicable privacy laws and that participants have been appropriately informed.<br><br>
+            <strong>6. AI-GENERATED OUTPUT &mdash; YOUR RESPONSIBILITY</strong><br>
+            MinuteScribe uses artificial intelligence to generate meeting minutes. AI-generated content is not perfect. The output may contain errors, omissions, misidentified speakers, or inaccuracies. You are responsible for reviewing all AI-generated minutes before using them as an official record of any meeting. MinuteScribe is a productivity tool, not a substitute for human judgement. We are not liable for any consequences arising from errors in AI-generated output.<br><br>
+            <strong>7. THIRD-PARTY SERVICE DEPENDENCY</strong><br>
+            MinuteScribe depends on the Anthropic Claude API to generate meeting minutes. We cannot guarantee uninterrupted service. If Anthropic&rsquo;s servers are unavailable, minutes generation will not work until service is restored. We are not liable for any loss or inconvenience caused by Anthropic outages or service disruptions. If Anthropic deprecates models used by MinuteScribe, we will notify you by email and provide a free updated version within a reasonable time.<br><br>
+            <strong>8. UPDATES</strong><br>
+            We may release updated versions of MinuteScribe from time to time. You will be notified by email. Updates are free for the life of your purchased credit bundle. You choose when to install updates &mdash; we will never update the software on your computer without your action.<br><br>
+            <strong>9. REFUNDS</strong><br>
+            We offer a 30-day money-back guarantee if the software does not function as described. Unused credits are non-refundable outside the 30-day window. To request a refund, contact <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> with your order number. The full Refund Policy is available at www.minutescribe.ca.<br><br>
+            <strong>10. LIMITATION OF LIABILITY</strong><br>
+            To the fullest extent permitted by applicable law: our total liability to your organisation for any claim arising out of this agreement is limited to the amount your organisation paid for the software; we are not liable for any indirect, incidental, consequential, or special damages, including but not limited to lost data, lost revenue, or business interruption; the software is provided as-is, without warranty of any kind, express or implied. Nothing in this agreement limits liability that cannot be excluded under applicable law.<br><br>
+            <strong>11. GOVERNING LAW</strong><br>
+            This agreement is governed by the laws of the Province of Ontario and the federal laws of Canada applicable therein. Any disputes arising under this agreement will be subject to the exclusive jurisdiction of the courts of Ontario.<br><br>
+            <strong>12. ENTIRE AGREEMENT</strong><br>
+            This agreement, together with the Privacy Policy and Refund Policy incorporated by reference, constitutes the entire agreement between you and MinuteScribe regarding the software. It supersedes all prior discussions, representations, or agreements, whether written or oral.<br><br>
+            <strong>13. CONTACT</strong><br>
+            Franklin Wong, carrying on business as MinuteScribe &mdash; <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> &mdash; www.minutescribe.ca
+          </div>
+        </details>
+
+      </div><!-- end Policies group -->
+    </div><!-- end .faq-body -->
+    </div><!-- end .page-inner -->
+  </div><!-- end #faq -->
+
+  <!-- ══════════════════════════════════════════
+       GETTING STARTED  (04a + 04b + 04c merged into one #getting-started div)
+       CSS from 04_getting_started_css.html is in the <head> <style> block above.
+       ══════════════════════════════════════════ -->
+  <div id="getting-started">
+    <div class="page-inner">
+    <div class="gs-section-tag">Getting Started</div>
+    <div class="gs-section-heading">From installation to your first set of finished minutes.</div>
+    <div class="gs-intro">MinuteScribe is designed to be straightforward to install and use. This guide walks you through everything in five parts. If you get stuck at any point, help is available at <a href="mailto:support@minutescribe.ca">support@minutescribe.ca</a>.</div>
+
+    <!-- Part 1 — Installing (04a) -->
+    <details class="gs-part">
+      <summary class="gs-part-title"><span>Part 1 &mdash; Installing</span><span class="gs-part-chevron">&#9660;</span></summary>
+      <div class="gs-part-body">
+        <div class="gs-step">
+          <div class="gs-step-label">Step 1</div>
+          <div class="gs-step-title">Download the installer</div>
+          <div class="gs-step-body">After your purchase, you will receive an email containing your download link. Click the link to download the MinuteScribe installer file &mdash; called <strong>MinuteScribe_Setup.exe</strong> &mdash; to your computer. Your browser will save it to your Downloads folder.</div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 2</div>
+          <div class="gs-step-title">Windows will show a security warning &mdash; here is what to do</div>
+          <div class="gs-step-body">When you double-click the installer, Windows will display a security warning that says <strong>&ldquo;Windows protected your PC.&rdquo;</strong> This is normal and expected for newly released software. It does not mean MinuteScribe is harmful.<ol><li>Click <strong>More info</strong> on the warning screen</li><li>Click <strong>Run anyway</strong></li><li>The installer will open normally</li></ol></div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 3</div>
+          <div class="gs-step-title">Run the installer</div>
+          <div class="gs-step-body">The MinuteScribe installer will open as a standard Windows wizard. Click <strong>Next</strong> through the steps and then click <strong>Install</strong>. When installation is complete click <strong>Finish</strong>. A MinuteScribe shortcut will appear on your desktop automatically.</div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Part 2 — First-time Setup (04a) -->
+    <details class="gs-part">
+      <summary class="gs-part-title"><span>Part 2 &mdash; First-time Setup</span><span class="gs-part-chevron">&#9660;</span></summary>
+      <div class="gs-part-body">
+        <div class="gs-step">
+          <div class="gs-step-label">Step 4</div>
+          <div class="gs-step-title">Enter your organisation name</div>
+          <div class="gs-step-body">The first time MinuteScribe is run, a text file will open in Notepad. You are asked to type your organisation&rsquo;s name. Click Save in Notepad to save the text file. MinuteScribe will use this name in every set of minutes it produces.</div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 5</div>
+          <div class="gs-step-title">Enter your personnel list</div>
+          <div class="gs-step-body">The first time MinuteScribe is run, a text file will open in Notepad. You are asked type the names of your board members or regular attendees, one per line. Click Save in Notepad to save the text file. Close Notepad. MinuteScribe includes this list in the minutes.</div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 6</div>
+          <div class="gs-step-title">Enter your licence code</div>
+          <div class="gs-step-body">Double-click the MinuteScribe shortcut on your desktop. The licence code is included in your purchase confirmation email. Type or paste the code and click <strong>Redeem Credit Code</strong>.</div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Part 3 — Getting Your Recording Ready (04b) -->
+    <details class="gs-part">
+      <summary class="gs-part-title"><span>Part 3 &mdash; Getting Your Recording Ready</span><span class="gs-part-chevron">&#9660;</span></summary>
+      <div class="gs-part-body">
+        <div class="gs-intro-note">MinuteScribe needs your meeting recording. Choose your recording scenario below and follow those steps. If you recorded on your phone, also follow the LocalSend transfer steps at the end.</div>
+        <div class="gs-warning">Getting the audio recording onto your computer is the one step where you may need help from someone. The process becomes familiar quickly. Ask a tech-savvy colleague to help install LocalSend if needed &mdash; instructions are in the User Questions section.</div>
+
+        <input class="gs-sc-radios" type="radio" name="gs-scenario" id="gs-sc-a">
+        <input class="gs-sc-radios" type="radio" name="gs-scenario" id="gs-sc-b" checked>
+        <input class="gs-sc-radios" type="radio" name="gs-scenario" id="gs-sc-c">
+
+        <div class="scenario-bar">
+          <label class="scenario-label" for="gs-sc-a">I recorded on an iPhone</label>
+          <label class="scenario-label" for="gs-sc-b">I recorded on an Android phone</label>
+          <label class="scenario-label" for="gs-sc-c">I recorded on Zoom or Teams</label>
+        </div>
+
+        <div class="scenario-panels">
+          <div class="scenario-panel" id="gs-sc-panel-a">
+            <div class="gs-step">
+              <div class="gs-step-label">Step 1 &mdash; iPhone</div>
+              <div class="gs-step-title">Record your meeting</div>
+              <div class="gs-step-body">Open the <strong>Voice Memos</strong> app before the meeting begins. Tap the red record button to start. Tap <strong>Stop</strong> when the meeting ends.</div>
+            </div>
+            <div class="gs-step">
+              <div class="gs-step-label">Step 2 &mdash; iPhone</div>
+              <div class="gs-step-title">Save the recording to your phone&rsquo;s Files folder</div>
+              <div class="gs-step-body"><ol><li>Open Voice Memos and tap your recording to select it</li><li>Tap the three dot menu (&bull;&bull;&bull;)</li><li>Tap <strong>Share</strong>, then <strong>Save to Files</strong></li><li>Navigate to Downloads, supply a filename, tap <strong>Save</strong></li></ol>Then continue to the LocalSend steps below.</div>
+            </div>
+          </div>
+          <div class="scenario-panel" id="gs-sc-panel-b">
+            <div class="gs-step">
+              <div class="gs-step-label">Step 1 &mdash; Android</div>
+              <div class="gs-step-title">Record your meeting</div>
+              <div class="gs-step-body">Open the <strong>Recorder</strong> app before the meeting begins. Tap the record button to start. Tap <strong>Stop</strong> when the meeting ends.</div>
+            </div>
+            <div class="gs-step">
+              <div class="gs-step-label">Step 2 &mdash; Android</div>
+              <div class="gs-step-title">Save the recording to Downloads</div>
+              <div class="gs-step-body"><ol><li>Open the Recorder app and tap your recording to select it</li><li>Tap the three dot menu, then the <strong>Share</strong> icon</li><li>Tap <strong>Next</strong> to select the Audio (.m4a) file, then tap <strong>Files</strong></li><li>Supply a filename and save to Downloads</li></ol>Then continue to the LocalSend steps below.</div>
+            </div>
+          </div>
+          <div class="scenario-panel" id="gs-sc-panel-c">
+            <div class="gs-step">
+              <div class="gs-step-label">Step 1 &mdash; Zoom</div>
+              <div class="gs-step-title">Save your Zoom recording</div>
+              <div class="gs-step-body">Have the host turn <strong>ON</strong> recording at the start. Stop when the meeting ends. The recording is saved automatically to the Zoom folder on your computer. Rename it, then go to Part 4.</div>
+            </div>
+            <div class="gs-step">
+              <div class="gs-step-label">Step 2 &mdash; Teams</div>
+              <div class="gs-step-title">Save your Teams recording</div>
+              <div class="gs-step-body">Have the host turn <strong>ON</strong> recording at the start. Stop when the meeting ends. The recording is saved to OneDrive. Download it to your Downloads folder, rename it, then go to Part 4.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="gs-localsend">
+          <div class="localsend-label">iPhone and Android users &mdash; Transfer using LocalSend</div>
+          <div class="gs-step">
+            <div class="gs-step-label">Step 3</div>
+            <div class="gs-step-title">Open LocalSend on both devices</div>
+            <div class="gs-step-body">Open LocalSend on your <strong>computer first</strong>, then on your phone. Both must be on the same WiFi network.</div>
+          </div>
+          <div class="gs-step">
+            <div class="gs-step-label">Step 4</div>
+            <div class="gs-step-title">Send the recording from your phone</div>
+            <div class="gs-step-body"><ol><li>Tap <strong>Send</strong>, then <strong>File</strong>, then <strong>Audio</strong></li><li>Select your recording and tap your computer name</li></ol></div>
+          </div>
+          <div class="gs-step">
+            <div class="gs-step-label">Step 5</div>
+            <div class="gs-step-title">Accept on your computer</div>
+            <div class="gs-step-body">Click <strong>Accept</strong> when the request appears, then <strong>Done</strong> when complete.<br><a class="video-link" href="https://www.youtube.com/watch?v=1E_SIgSVVEs" target="_blank">&#9654; Watch: LocalSend file transfer demonstration</a></div>
+          </div>
+          <div class="gs-step">
+            <div class="gs-step-label">Step 6</div>
+            <div class="gs-step-title">Rename the recording if needed</div>
+            <div class="gs-step-body">Open MinuteScribe, click <strong>Select Audio File</strong>, find the file in Downloads, right-click and <strong>Rename</strong> it to something like 2026-05-14-Meeting.</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Part 4 — Running MinuteScribe (04c) -->
+    <details class="gs-part">
+      <summary class="gs-part-title"><span>Part 4 &mdash; Running MinuteScribe</span><span class="gs-part-chevron">&#9660;</span></summary>
+      <div class="gs-part-body">
+        <div class="gs-step">
+          <div class="gs-step-label">Step 7</div>
+          <div class="gs-step-title">Select your recording file</div>
+          <div class="gs-step-body">Double-click the MinuteScribe shortcut. Click <strong>Select Audio File</strong>, navigate to Downloads, click your recording, and click <strong>Open</strong>.</div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 8</div>
+          <div class="gs-step-title">Wait for processing</div>
+          <div class="gs-step-body">MinuteScribe begins processing immediately. A two hour meeting takes approximately ten minutes. <strong>Do not close the application while it is working.</strong></div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 9</div>
+          <div class="gs-step-title">Review your finished document</div>
+          <div class="gs-step-body">Your completed minutes open automatically in Word. Read through carefully before using as an official record. Speaker names may need correction. To find your minutes later, click <strong>Open Minutes Folder</strong>.</div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Part 5 — Managing Credits (04c) -->
+    <details class="gs-part" style="border-bottom:none;">
+      <summary class="gs-part-title"><span>Part 5 &mdash; Managing Credits</span><span class="gs-part-chevron">&#9660;</span></summary>
+      <div class="gs-part-body">
+        <div class="gs-step">
+          <div class="gs-step-label">Step 10</div>
+          <div class="gs-step-title">Checking your balance</div>
+          <div class="gs-step-body">Your remaining credit balance is always shown in the MinuteScribe application. Each time MinuteScribe produces a set of minutes, one credit is used. When your balance reaches three credits or fewer, MinuteScribe will remind you to top up.</div>
+        </div>
+        <div class="gs-step">
+          <div class="gs-step-label">Step 11</div>
+          <div class="gs-step-title">Topping up when your balance is low</div>
+          <div class="gs-step-body">Open the <strong>Credits</strong> menu and select <strong>Buy Credits</strong>. Complete your purchase and enter the new licence code by selecting <strong>Redeem Credit Code</strong>. Your new credits are added immediately.</div>
+        </div>
+      </div>
+    </details>
+
+    </div><!-- end .page-inner -->
+  </div><!-- end #getting-started -->
+
+  <!-- ══════════════════════════════════════════
+       USER QUESTIONS  (05_user_questions.html)
+       ══════════════════════════════════════════ -->
+  <div id="user-questions">
+    <div class="page-inner">
+    <div class="uq-section-tag">User Questions</div>
+    <div class="uq-section-heading">More questions answered.</div>
+    <div class="uq-body">
+
+      <!-- Installing and setting up LocalSend -->
+      <div class="uq-group">
+        <div class="uq-group-title">Installing and setting up LocalSend</div>
+        <details class="uq-item">
+          <summary class="uq-q"><span>How do I install LocalSend on my computer and phone?</span><span class="uq-chevron">&#9660;</span></summary>
+          <div class="uq-a">
+            <div class="uq-intro-note">LocalSend transfers your meeting recording over your WiFi network. The file never leaves your local network. Choose your device below.</div>
+
+            <input class="uq-tab-radios" type="radio" name="uq-localsend" id="uq-t0" checked>
+            <input class="uq-tab-radios" type="radio" name="uq-localsend" id="uq-t1">
+            <input class="uq-tab-radios" type="radio" name="uq-localsend" id="uq-t2">
+
+            <div class="uq-tabs">
+              <label class="uq-tab-label" for="uq-t0">On my computer</label>
+              <label class="uq-tab-label" for="uq-t1">On an Android phone</label>
+              <label class="uq-tab-label" for="uq-t2">On an iPhone</label>
+            </div>
+
+            <div class="uq-panels">
+              <div class="uq-panel uq-steps"><ol>
+                <li>Go to <strong>localsend.org</strong> and click Download</li>
+                <li>Click <strong>EXE (Installer)</strong> to download</li>
+                <li>Double-click the installer, select <strong>Install for all users</strong>, click Yes</li>
+                <li>Accept defaults, add desktop shortcut, click <strong>Next &rarr; Install &rarr; Finish</strong></li>
+                <li>Open LocalSend from your desktop</li>
+                <li>Click <strong>Settings &rarr; Receive &rarr; Save to folder &rarr; Downloads</strong></li>
+                <li>Click <strong>Select Folder</strong>, then <strong>Receive</strong> &mdash; LocalSend is ready</li>
+              </ol></div>
+              <div class="uq-panel uq-steps"><ol>
+                <li>Go to the <strong>Google Play Store</strong>, search <strong>localsend</strong></li>
+                <li>Install the app by Tien Do Nam</li>
+                <li>Open LocalSend on your computer first, then on your phone</li>
+                <li>Grant permission to access Music and audio files &mdash; tap <strong>Allow</strong></li>
+                <li>LocalSend on Android is ready to use</li>
+              </ol></div>
+              <div class="uq-panel uq-steps"><ol>
+                <li>Go to the <strong>Apple App Store</strong>, search <strong>localsend</strong></li>
+                <li>Install the app by Tien Do Nam</li>
+                <li>Open LocalSend on your computer first, then on your iPhone</li>
+                <li>Tap <strong>Allow</strong> when asked to connect to devices on your network</li>
+                <li>LocalSend on iPhone is ready to use</li>
+              </ol></div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Using LocalSend -->
+      <div class="uq-group">
+        <div class="uq-group-title">Using LocalSend</div>
+        <details class="uq-item">
+          <summary class="uq-q"><span>Can you show me how to use LocalSend to send the meeting recording to my computer?</span><span class="uq-chevron">&#9660;</span></summary>
+          <div class="uq-a">A video demonstration is available below.<br><a class="video-link" href="https://www.youtube.com/watch?v=1E_SIgSVVEs" target="_blank">&#9654; Watch: How to transfer files using LocalSend</a></div>
+        </details>
+      </div>
+
+      <!-- Alternatives to LocalSend -->
+      <div class="uq-group">
+        <div class="uq-group-title">Alternatives to LocalSend</div>
+        <details class="uq-item">
+          <summary class="uq-q"><span>What are the alternatives to LocalSend for transferring a recording to the computer?</span><span class="uq-chevron">&#9660;</span></summary>
+          <div class="uq-a">
+            If LocalSend cannot be used, two alternatives are available.
+            <div style="margin-top:14px;">
+              <div class="uq-option">
+                <div class="uq-option-title">Option 1 &mdash; USB cable</div>
+                Connect your phone using a USB-C to USB-A cable.<br>
+                <a class="video-link" href="https://www.youtube.com/watch?v=QJGutX7CHC8" target="_blank">&#9654; Watch: Transfer files using a USB cable</a>
+              </div>
+              <div class="uq-option">
+                <div class="uq-option-title">Option 2 &mdash; Google Drive</div>
+                Use Google Drive to transfer the recording between your phone and computer.<br>
+                <a class="video-link" href="https://www.youtube.com/watch?v=crhKpivDtN8" target="_blank">&#9654; Watch: Google Drive on Android</a><br>
+                <a class="video-link" href="https://www.youtube.com/watch?v=VhCLSfCESpY" target="_blank">&#9654; Watch: Google Drive on iPhone</a>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Computer requirements and Google Meet -->
+      <div class="uq-group">
+        <div class="uq-group-title">Computer requirements and Google Meet</div>
+        <details class="uq-item">
+          <summary class="uq-q"><span>What are the minimum computer requirements to run MinuteScribe?</span><span class="uq-chevron">&#9660;</span></summary>
+          <div class="uq-a">MinuteScribe requires Windows 10 or Windows 11. The computer should have at least 8GB of RAM. A computer with only 4GB of RAM may struggle with the audio transcription step. A mid-range computer purchased in the last five years should be sufficient.</div>
+        </details>
+        <details class="uq-item">
+          <summary class="uq-q"><span>How can I record a meeting held on the free version of Google Meet?</span><span class="uq-chevron">&#9660;</span></summary>
+          <div class="uq-a">The free version of Google Meet does not include a built-in recording feature. Free Chrome extensions are available that can record your meeting audio. MinuteScribe works with the audio formats these extensions produce.<br><a class="video-link" href="https://www.youtube.com/watch?v=iEUFof68cI4" target="_blank">&#9654; Watch: How to record Google Meet using a Chrome extension</a></div>
+        </details>
+      </div>
+
+      <!-- Cloud storage for large audio files -->
+      <div class="uq-group" style="margin-bottom:0;">
+        <div class="uq-group-title">Cloud storage for large audio files</div>
+        <details class="uq-item">
+          <summary class="uq-q"><span>How do I set up cloud storage to transfer a recording that is too large to send by email?</span><span class="uq-chevron">&#9660;</span></summary>
+          <div class="uq-a">
+            If a recording exceeds 200MB it cannot be transferred by email. Google Drive is a free cloud storage service that can be used to transfer large files between your phone and computer.<br><br>
+            <a class="video-link" href="https://www.youtube.com/watch?v=crhKpivDtN8" target="_blank">&#9654; Watch: Google Drive on Android</a><br>
+            <a class="video-link" href="https://www.youtube.com/watch?v=VhCLSfCESpY" target="_blank">&#9654; Watch: Google Drive on iPhone</a>
+          </div>
+        </details>
+      </div>
+
+    </div><!-- end .uq-body -->
+    </div><!-- end .page-inner -->
+  </div><!-- end #user-questions -->
+
+  <!-- ══════════════════════════════════════════
+       FOOTER  (06_footer.html)
+       ══════════════════════════════════════════ -->
+  <div id="footer">
+    <div class="page-inner">
+    <div class="footer-contact">
+      Questions? Contact us at <a href="mailto:support@minutescribe.ca">support@minutescribe.ca</a><br>
+      We respond within two business days.
+    </div>
+    <div class="footer-copyright">
+      &copy; 2026 MinuteScribe. All rights reserved.<br>
+      Windows is a trademark of Microsoft Corporation.
+    </div>
+    </div><!-- end .page-inner -->
+  </div><!-- end #footer -->
+
+</body>
+</html>
