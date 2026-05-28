@@ -79,13 +79,13 @@
     }
     .benefit {
       display: flex;
-      gap: 32px;
+      gap: 8px;
       padding: 26px 0;
       border-bottom: 1px solid #D1D1D1;
     }
     .benefit:first-of-type { padding-top: 0; }
     .benefit:last-of-type  { border-bottom: none; padding-bottom: 0; }
-    .benefit-left  { width: 240px; flex-shrink: 0; }
+    .benefit-left  { width: 260px; flex-shrink: 0; }
     .benefit-tag {
       font-size: 10px;
       font-weight: 700;
@@ -539,9 +539,9 @@
       <div class="benefit">
         <div class="benefit-left">
           <span class="benefit-tag">Privacy</span>
-          <div class="benefit-title">Your meeting never<br>leaves the room.</div>
+          <div class="benefit-title">Your meeting<br>stays private.</div>
         </div>
-        <div class="benefit-body">Processed entirely on your own computer. No audio files, no transcripts, and no meeting content are ever sent to an outside server. <strong>What happens in your meeting stays private.</strong></div>
+        <div class="benefit-body">Your audio recording never leaves your computer. MinuteScribe transcribes your meeting locally. When you submit your recording, the text is automatically sent to AI for formatting &mdash; not stored, not kept. <strong>What happens in your meeting stays private.</strong></div>
       </div>
 
       <div class="benefit">
@@ -653,7 +653,7 @@
         </details>
         <details class="faq-item" style="border-bottom:none;">
           <summary class="faq-q"><span>Is my meeting content kept private?</span><span class="faq-chevron">&#9660;</span></summary>
-          <div class="faq-a">Completely. MinuteScribe processes your recording directly on your own computer. No audio, no transcript, and no meeting content is ever sent to an outside server. Your meeting stays private.</div>
+          <div class="faq-a">Your audio recording never leaves your computer. MinuteScribe transcribes your meeting locally &mdash; nothing is uploaded. When you submit recording, only the text is sent to AI for formatting &mdash; not stored, not kept. What happens in your meeting stays private.</div>
         </details>
       </div>
 
@@ -725,21 +725,21 @@
           <div class="faq-a">
             <strong>Effective date: 31 May 2026</strong><br><br>
             <strong>THE SHORT VERSION</strong><br>
-            MinuteScribe is built around a simple privacy principle: your audio recordings never leave your computer. This policy explains exactly what happens to your data when you use MinuteScribe.<br><br>
+            MinuteScribe is built around a simple privacy principle: your audio recording never leaves your computer. When you submit your recording, only the text transcript is sent to our AI provider &mdash; nothing more, and only at your direction. This policy explains exactly what happens to your data when you use MinuteScribe.<br><br>
             <strong>1. WHO WE ARE</strong><br>
             MinuteScribe is a Windows desktop application developed and operated by Franklin Wong, carrying on business as MinuteScribe (&ldquo;MinuteScribe,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;). You can reach us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a>.<br><br>
             <strong>2. WHAT MINUTESCRIBE DOES &mdash; AND DOES NOT &mdash; COLLECT</strong><br>
-            MinuteScribe does not collect, store, or transmit: your audio recordings; your name, email address, or any account information; usage statistics or analytics; or any data in the background.<br><br>
-            The only data that leaves your computer is the text transcript of your meeting, and only when you choose to generate minutes. See Section 3 for details.<br><br>
-            <strong>3. WHAT HAPPENS WHEN YOU GENERATE MINUTES</strong><br>
-            When you click &ldquo;Generate Minutes,&rdquo; MinuteScribe does the following: (1) Your audio file is transcribed into text on your own computer using a local speech-recognition model. The audio file never leaves your machine. (2) The text transcript is sent to the Anthropic API, operated by Anthropic, PBC, for the sole purpose of producing your formatted meeting minutes. Anthropic does not use API inputs to train its models. The transcript is processed and the result is returned to your computer &mdash; it is not stored or retained by MinuteScribe. (3) The finished minutes are returned to your computer and displayed in the application.<br><br>
+            MinuteScribe does not collect, store, or transmit: your audio recordings; your name, email address, or any account information; usage statistics or analytics. MinuteScribe makes no network connections except when processing your recording.<br><br>
+            The only data that leaves your computer is the text transcript of your meeting after you have submitted the audio recording. See Section 3 for details.<br><br>
+            <strong>3. WHAT HAPPENS WHEN YOU SUBMIT YOUR RECORDING</strong><br>
+            When you submit your audio recording, MinuteScribe does the following: (1) Your audio file is transcribed into text on your own computer using a local speech-recognition model. The audio file never leaves your machine. (2) The text transcript is sent to the Anthropic API, operated by Anthropic, PBC, for the sole purpose of producing your formatted meeting minutes. Anthropic does not use API inputs to train its models. The transcript is processed and the result is returned to your computer &mdash; it is not stored or retained by MinuteScribe. (3) The finished minutes are returned to your computer and displayed in the application.<br><br>
             No other network communication takes place. MinuteScribe makes no background connections of any kind.<br><br>
             <strong>4. ANTHROPIC&rsquo;S HANDLING OF TRANSCRIPT DATA</strong><br>
             For completeness, Anthropic&rsquo;s data practices are governed by their Privacy Policy, available at https://www.anthropic.com/legal/privacy. We have no control over Anthropic&rsquo;s data practices and are not responsible for them.<br><br>
             <strong>5. YOUR RESPONSIBILITY FOR MEETING PARTICIPANTS</strong><br>
             Meeting transcripts may contain personal information about people who attended your meeting. You are responsible for ensuring that your use of MinuteScribe complies with any applicable privacy laws and that meeting participants have been made aware that their words may be transcribed and processed. If you are unsure whether your use of MinuteScribe complies with your organisation&rsquo;s privacy obligations, please seek appropriate advice.<br><br>
             <strong>6. CANADIAN PRIVACY LAW (PIPEDA)</strong><br>
-            MinuteScribe is operated from Canada and complies with the Personal Information Protection and Electronic Documents Act (PIPEDA). Because MinuteScribe collects no personal information itself &mdash; and because the only data transmitted is the meeting transcript sent to Anthropic at your explicit direction &mdash; your PIPEDA rights regarding MinuteScribe are limited in practical scope. However, if you have questions or concerns about privacy, you may contact us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> and we will respond within a reasonable time.<br><br>
+            MinuteScribe is operated from Canada and complies with the Personal Information Protection and Electronic Documents Act (PIPEDA). Because MinuteScribe collects no personal information itself &mdash; and because the only data transmitted is the meeting transcript sent to Anthropic at your direction &mdash; your PIPEDA rights regarding MinuteScribe are limited in practical scope. However, if you have questions or concerns about privacy, you may contact us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> and we will respond within a reasonable time.<br><br>
             <strong>7. CHANGES TO THIS POLICY</strong><br>
             If we make material changes to this policy, we will notify registered users by email and update the effective date above. The current version of this policy is always available at www.minutescribe.ca.<br><br>
             <strong>8. CONTACT</strong><br>
@@ -752,7 +752,7 @@
           <div class="faq-a">
             <strong>Effective date: 31 May 2026</strong><br><br>
             <strong>THE SHORT VERSION</strong><br>
-            If MinuteScribe doesn&rsquo;t work as described, contact us within 30 days of purchase and we will make it right. Outside that window, credits are non-refundable.<br><br>
+            If MinuteScribe doesn&rsquo;t work as described on our website or in our documentation, contact us within 30 days of purchase and we will issue a full refund. Outside that window, credits are non-refundable.<br><br>
             <strong>1. 30-DAY SATISFACTION GUARANTEE</strong><br>
             If MinuteScribe does not function as described on our website or in our documentation, you may request a full refund within 30 days of your original purchase date. To request a refund, contact us at <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> with your order number and a brief description of the problem. We will review every request promptly and respond within a reasonable time, typically 3&ndash;5 business days.<br><br>
             <strong>2. WHAT QUALIFIES FOR A REFUND</strong><br>
@@ -783,9 +783,9 @@
             <strong>3. WHAT YOU MAY NOT DO</strong><br>
             The following are not permitted: resell or redistribute the software or your call credits to any third party; share or transfer your licence to another organisation; reverse engineer, decompile, or disassemble the software or attempt to derive its source code; attempt to extract, reverse engineer, or misuse any credentials, keys, or authentication tokens embedded in the software (doing so is a breach of this agreement and may result in immediate termination of your licence without refund); use the software for any purpose that violates applicable law.<br><br>
             <strong>4. CALL CREDITS AND USAGE LIMITS</strong><br>
-            Each time you generate meeting minutes, one call credit is used. Your remaining credit balance is always shown in the application. Credits do not expire. When your credits run out, you can purchase additional credits at www.minutescribe.ca. Credits have no cash value and are non-transferable. The application will prevent minutes generation when your credit balance reaches zero &mdash; this is not a defect.<br><br>
+            Each time MinuteScribe produces meeting minutes, one call credit is used. Your remaining credit balance is always shown in the application. Credits do not expire. When your credits run out, you can purchase additional credits at www.minutescribe.ca. Credits have no cash value and are non-transferable. The application will prevent minutes generation when your credit balance reaches zero &mdash; this is not a defect.<br><br>
             <strong>5. YOUR AUDIO AND YOUR DATA</strong><br>
-            Your audio recordings are transcribed locally on your computer using a built-in speech recognition model. Your audio files are never uploaded, transmitted, or shared under any circumstances. When you click &ldquo;Generate Minutes,&rdquo; the text transcript is sent to the Anthropic API for the sole purpose of producing your meeting minutes. This is the only network communication MinuteScribe makes. No background connections, no telemetry, and no silent data transmission of any kind take place. You are responsible for ensuring that your use of MinuteScribe complies with applicable privacy laws and that participants have been appropriately informed.<br><br>
+            Your audio recordings are transcribed locally on your computer using a built-in speech recognition model. Your audio files are never uploaded, transmitted, or shared under any circumstances. When you submit your audio recording, the text transcript is sent to the Anthropic API for the sole purpose of producing your meeting minutes. This is the only network communication MinuteScribe makes. No background connections, no telemetry, and no silent data transmission of any kind take place. You are responsible for ensuring that your use of MinuteScribe complies with applicable privacy laws and that participants have been appropriately informed.<br><br>
             <strong>6. AI-GENERATED OUTPUT &mdash; YOUR RESPONSIBILITY</strong><br>
             MinuteScribe uses artificial intelligence to generate meeting minutes. AI-generated content is not perfect. The output may contain errors, omissions, misidentified speakers, or inaccuracies. You are responsible for reviewing all AI-generated minutes before using them as an official record of any meeting. MinuteScribe is a productivity tool, not a substitute for human judgement. We are not liable for any consequences arising from errors in AI-generated output.<br><br>
             <strong>7. THIRD-PARTY SERVICE DEPENDENCY</strong><br>
@@ -793,7 +793,7 @@
             <strong>8. UPDATES</strong><br>
             We may release updated versions of MinuteScribe from time to time. You will be notified by email. Updates are free for the life of your purchased credit bundle. You choose when to install updates &mdash; we will never update the software on your computer without your action.<br><br>
             <strong>9. REFUNDS</strong><br>
-            We offer a 30-day money-back guarantee if the software does not function as described. Unused credits are non-refundable outside the 30-day window. To request a refund, contact <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> with your order number. The full Refund Policy is available at www.minutescribe.ca.<br><br>
+            We offer a 30-day money-back guarantee if the software does not function as described on our website or in our documentation. Unused credits are non-refundable outside the 30-day window. To request a refund, contact <a class="faq-email" href="mailto:support@minutescribe.ca">support@minutescribe.ca</a> with your order number. The full Refund Policy is available at www.minutescribe.ca.<br><br>
             <strong>10. LIMITATION OF LIABILITY</strong><br>
             To the fullest extent permitted by applicable law: our total liability to your organisation for any claim arising out of this agreement is limited to the amount your organisation paid for the software; we are not liable for any indirect, incidental, consequential, or special damages, including but not limited to lost data, lost revenue, or business interruption; the software is provided as-is, without warranty of any kind, express or implied. Nothing in this agreement limits liability that cannot be excluded under applicable law.<br><br>
             <strong>11. GOVERNING LAW</strong><br>
